@@ -109,7 +109,7 @@ def viewById(variable):
 			return jsonify(result)
 	else:
 		return "You need to login to view this resource"
-
+          
 
 # Fix this Matt
 # submit application
@@ -131,15 +131,16 @@ def submitApplication():
 @app.route('/admins/addnew', methods=['POST'])
 def addNewAdmin():
 	if 'admin' in session:
+		#usernameEntry = request.form['uName']
 		connection = databaseConnection()
 		try:
 			with connection.cursor() as cursor:
-				sql = "INSERT INTO 'Admins'('uName') VALUES (%s)"
-				cursor.execute(sql, (request.form["uName"]))
+				sql = "INSERT INTO 'Admins' ('uName') VALUES (%s)"
+				#cursor.execute(sql, (request.form['uName']))
 				connection.commit()
 		finally:
 			connection.close()
-		return result
+		return 'test'
 		# Access the admins table
 		# Create a new entry
 		# POST variables: uName
