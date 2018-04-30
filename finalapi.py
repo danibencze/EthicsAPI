@@ -1,3 +1,4 @@
+# coding=utf-8
 from flask import Flask, session, redirect, url_for, escape, request, jsonify
 from ldap3 import Server, Connection, ALL
 import pymysql.cursors
@@ -111,7 +112,7 @@ def viewById(variable):
 		return "You need to login to view this resource"
 
 
-# Fix this Matt
+# This should hopefully work, untested because forms being made by someone else - matt
 # submit application
 @app.route('/applications/submit', methods=["POST"])
 def submitApplication():
@@ -119,8 +120,15 @@ def submitApplication():
 		connection = databaseConnection()
 		try:
 			with connection.cursor() as cursor:
-				sql = "INSERT INTO 'Info' ('stu_no', 'stu_name', 'app_status') VALUES (%s, %s, %s)"
-				cursor.execute(sql, (request.form['stu_no'], request.form["stu_name"], request.form["app_status"]))
+
+				sql1 = "INSERT INTO 'General' ('ID', 'Title', 'Pre_ID', 'Student_Name', 'Student_Num', 'Supervisor_Name', 'Principle_Researcher', 'Other_Researchers', 'Project_start', 'Project_end', 'Full_Project_Plan', 'FPP_ID', 'Participant_Info_Form', 'PIF_ID', 'Consent_Form', 'CF_ID', 'External_Funding', 'EF_ID', 'Motivations', 'M_ID') VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,)"
+
+				sql2 = "INSERT INTO 'Info' ('ID', 'N_1', 'N_1_1', 'N_2', 'N_3', 'N_4', 'N_5', 'N_6', 'N_7', 'E_1', 'N_8', 'N_9', 'N_10', 'N_11', 'N_12', 'E_2', 'N_13', 'N_14', 'E_3', 'E_3_3', 'N_15', 'N_16', 'N_16_16', 'N_17', 'E_4', 'E_4_4', 'N_18', 'E_5', 'N_19', 'N_20', 'E_6', 'N_21', 'E_7', 'E_8', 'E_9') VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+
+				cursor.execute(sql1, (request.form['ID'], request.form['Title'], request.form['Pre_ID'], request.form['Student_Name'], request.form['Student_Num'], request.form['Supervisor_Name'], request.form['Principle_Researcher'], request.form['Other_Researchers'], request.form['Project_start'], request.form['Project_end'], request.form['Full_Project_Plan'], request.form['FPP_ID'], request.form['Participant_Info_Form'], request.form['PIF_ID'], request.form['Consent_Form'], request.form['CF_ID'], request.form['External_Funding'], request.form['EF_ID'], request.form['Motivations'], request.form['M_ID']))
+
+				cursor.execute(sql2, (request.form['ID'], request.form['N_1'], request.form['N_1_1'], request.form['N_2'], request.form['N_3'], request.form['N_4'], request.form['N_5'], request.form['N_6'], request.form['N_7'], request.form['E_1'], request.form['N_8'], request.form['N_9'], request.form['N_10'], request.form['N_11'], request.form['N_12'], request.form['E_2'], request.form['N_13'], request.form['N_14'], request.form['E_3'], request.form['E_3_3'], request.form['N_15'], request.form['N_16'], request.form['N_16_16'], request.form['N_17'], request.form['E_4'], request.form['E_4_4'], request.form['N_18'], request.form['E_5'], request.form['N_19'], request.form['N_20'], request.form['E_6'], request.form['N_21'], request.form['E_7'], request.form['E_8'], request.form['E_9']))
+
 				connection.commit()
 		finally:
 			connection.close()
