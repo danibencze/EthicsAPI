@@ -5,6 +5,7 @@ import pymysql.cursors
 app = Flask(__name__)
 
 
+# whenever someone wants to access the database call this function first
 def databaseConnection():
 	connection = pymysql.connect(host='csmysql.cs.cf.ac.uk',
 	                             user='group12.2017',
@@ -73,6 +74,7 @@ def auth():
 @app.route('/auth/logout')
 def logout():
 	session.pop('username', None)
+	session.pop('admin', None)
 	return redirect(url_for('index'))
 
 
@@ -109,6 +111,7 @@ def viewById(variable):
 		return "You need to login to view this resource"
 
 
+# Fix this Matt
 # submit application
 @app.route('/applications/submit', methods=["POST"])
 def submitApplication():
@@ -125,8 +128,24 @@ def submitApplication():
 	else:
 		return "You need to login to view this resource"
 
+@app.route('/admins/addnew', methods=['POST'])
+def addNewAdmin():
+	if 'admin' in session:
+		return 'To be completed'
+		# Access the admins table
+		# Create a new entry
+		# POST variables: uName
+		# request.form["uName"]
+	else:
+		return 'Access denied'
+
 
 app.secret_key = '\xe9]\x19c\x98\x10\xf0q\xc1\x18\x18|A/\xdd\xd3\x8fM\t\xa4\x18\xd1d\xf3{vL\xb0\xbe\xbd'
 
 if __name__ == "__main__":
 	app.run(host='0.0.0.0')
+
+# another database with all the admin names in it.
+# Whenever an admin is added to the admins table trigger another insert to the voting table
+
+# Make a
