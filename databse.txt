@@ -1,0 +1,64 @@
+CREATE TABLE General(
+   ID   INT  AUTO_INCREMENT  NOT NULL,
+   Title VARCHAR (40) NOT NULL,
+   Pre_ID  INT,
+   Student_Name  VARCHAR (40) ,
+   Student_Num   VARCHAR (9),
+   Supervisor_Name VARCHAR (40) ,
+   Principle_Researcher VARCHAR (40)  ,
+   Other_Researchers  VARCHAR (40) ,
+   Project_start   DATE,
+   Project_end DATE ,
+   Full_Project_Plan  INT  ,
+   FPP_ID  VARCHAR(30)  ,
+   Participant_Info_Form  INT ,
+   PIF_ID  VARCHAR(30)  ,
+   Consent_Form   INT,
+   CF_ID  VARCHAR(30)  ,
+   External_Funding  INT  ,
+   EF_ID  VARCHAR(30)  ,
+   Motivations  INT ,
+   M_ID  VARCHAR(30)  ,
+   PRIMARY KEY (ID)
+);
+ 
+CREATE TABLE Info(
+   ID   INT  AUTO_INCREMENT  NOT NULL,
+   N_1 INT,
+   N_1_1 INT NOT NULL ,
+   N_2 INT,
+   N_3 INT,
+   N_4 INT,
+   N_5 INT,
+   N_6 INT,
+   N_7 INT,
+   E_1 VARCHAR(255),
+ 
+   N_8 INT,
+   N_9 INT,
+   N_10 INT,
+   N_11 INT,
+   N_12 INT,
+   E_2 VARCHAR(255),
+   N_13 INT,
+   N_14 INT,
+   E_3 VARCHAR(255),
+   E_3_3 VARCHAR(255),
+   N_15 INT,
+   N_16 INT,
+   N_16_16 INT NOT NULL,
+   N_17 INT,
+   E_4 VARCHAR(255),
+   E_4_4 VARCHAR(255)
+   N_18 INT,
+   E_5 VARCHAR(255),
+   N_19 INT,
+   N_20 INT,
+   E_6 VARCHAR(255),
+
+   N_21 INT,
+   E_7 VARCHAR(255),
+   E_8 VARCHAR(255)
+   E_9 VARCHAR(255)
+   PRIMARY KEY (ID)
+);
