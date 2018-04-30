@@ -131,11 +131,20 @@ def submitApplication():
 @app.route('/admins/addnew', methods=['POST'])
 def addNewAdmin():
 	if 'admin' in session:
-		return 'To be completed'
+		connection = databaseConnection()
+		try:
+			with connection.cursor() as cursor:
+				sql = "INSERT INTO 'Admins'('uName') VALUES (%s)"
+				cursor.execute(sql, (request.form["uName"]))
+				connection.commit()
+		finally:
+			connection.close()
+		return result
 		# Access the admins table
 		# Create a new entry
 		# POST variables: uName
 		# request.form["uName"]
+		#v1
 	else:
 		return 'Access denied'
 
