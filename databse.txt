@@ -33,6 +33,7 @@ CREATE TABLE Info(
    N_6 INT,
    N_7 INT,
    E_1 VARCHAR(255),
+   E_1_1 VARCHAR(255),
  
    N_8 INT,
    N_9 INT,
@@ -48,6 +49,7 @@ CREATE TABLE Info(
    N_16 INT,
    N_16_16 INT NOT NULL,
    N_17 INT,
+   N_17_17 INT NOT NULL,
    E_4 VARCHAR(255),
    E_4_4 VARCHAR(255)
    N_18 INT,
