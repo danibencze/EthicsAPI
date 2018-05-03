@@ -2,6 +2,13 @@ from flask import Flask, session, redirect, url_for, escape, request, jsonify
 from ldap3 import Server, Connection, ALL
 import pymysql.cursors
 
+import smtplib
+
+from string import Template
+
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 app = Flask(__name__)
 
 
@@ -164,7 +171,7 @@ def add_new_admin():
 				connection.commit()
 		finally:
 			connection.close()
-		return 'Admin added successfully '
+		return 'Admin added successfully '  # Changed the return otherwise looks good.
 	# Access the admins table
 	# Create a new entry
 	# POST variables: uName
@@ -174,12 +181,88 @@ def add_new_admin():
 		return 'Access denied'
 
 
+# Contacts is a txt file containing the right people
+# Message is a txt file containing the actual message (Template) or can be a string as well!?
+# Subject is a string
+def send_email(contacts, message, subject):
+	MY_ADDRESS = 'BenczeDA@cardiff.ac.uk'
+	PASSWORD = 'MyPasswordHere'
+
+	names, emails = get_contacts(contacts)  # read contacts
+	# message_template = read_template('template.txt')
+	message_template = message
+
+	# set up the SMTP server
+	s = smtplib.SMTP(host='courier.cf.ac.uk', port=25)
+
+	# commented out as no need to login on eduroam, needs to be fixed if not on eduroam
+	# s.starttls()
+	# s.login(MY_ADDRESS, PASSWORD)
+
+	# For each contact, send the email:
+	for name, email in zip(names, emails):
+		msg = MIMEMultipart()  # create a message
+
+		# add in the actual person name to the message template
+		message = message_template.substitute(PERSON_NAME=name.title())
+
+		# Prints out the message body for our sake - Ross
+		# print(message)
+		# Commented out, no printing is allowed it breaks the API - Dani
+
+		# setup the parameters of the message
+		msg['From'] = MY_ADDRESS
+		msg['To'] = email
+		msg['Subject'] = subject
+
+		# add in the message body
+		msg.attach(MIMEText(message, 'plain'))
+
+		# send the message via the server set up earlier.
+		s.send_message(msg)
+		del msg
+
+	# Terminate the SMTP session and close the connection
+	s.quit()
+
+
+# return 'Email sent'
+# If it is an endpoint rather than a function it needs to return - Dani
+
+
+def get_contacts(filename):
+	"""
+		Return two lists names, emails containing names and email addresses
+		read from a file specified by filename.
+		"""
+
+	names = []
+	emails = []
+	with open(filename, mode='r', encoding='utf-8') as contacts_file:
+		for a_contact in contacts_file:
+			names.append(a_contact.split()[0])
+			emails.append(a_contact.split()[1])
+	return names, emails
+
+
+# We can use strings as massages instead of a txt file. Makes our life easier in this situation - Dani
+def read_template(filename):
+	"""
+		Returns a Template object comprising the contents of the
+		file specified by filename.
+		"""
+
+	with open(filename, 'r', encoding='utf-8') as template_file:
+		template_file_content = template_file.read()
+	return Template(template_file_content)
+
+
 app.secret_key = '\xe9]\x19c\x98\x10\xf0q\xc1\x18\x18|A/\xdd\xd3\x8fM\t\xa4\x18\xd1d\xf3{vL\xb0\xbe\xbd'
 
 if __name__ == "__main__":
 	app.run(host='0.0.0.0')
 
-# another database with all the admin names in it.
+# Email sending. Done - Dani
+# Another database with all the admin names in it. Done - Dani
 # Whenever an admin is added to the admins table trigger another insert to the voting table
-
-# Make a
+# Make a Voting table
