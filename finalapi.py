@@ -1,4 +1,3 @@
-# coding=utf-8
 from flask import Flask, session, redirect, url_for, escape, request, jsonify
 from ldap3 import Server, Connection, ALL
 import pymysql.cursors
@@ -7,7 +6,7 @@ app = Flask(__name__)
 
 
 # whenever someone wants to access the database call this function first
-def databaseConnection():
+def database_connect():
 	connection = pymysql.connect(host='csmysql.cs.cf.ac.uk',
 	                             user='group12.2017',
 	                             password='rwqeBE4DBj5vdk',
@@ -17,9 +16,9 @@ def databaseConnection():
 	return connection
 
 
-def checkpermission(userName):
+def check_permission(userName):
 	if 'username' in session:
-		connection = databaseConnection()
+		connection = database_connect()
 		try:
 			with connection.cursor() as cursor:
 				sql = "SELECT * FROM Admins WHERE uName=%s "
@@ -63,7 +62,7 @@ def auth():
 	conn = Connection(srv, user='uid=' + username + ',ou=people,dc=cs,dc=cardiff.ac.uk', password=password)
 	if conn.bind():
 		session["username"] = username
-		checkpermission(username)
+		check_permission(username)
 		if 'admin' in session:
 			return "You have logged in as an admin"
 		else:
@@ -81,9 +80,9 @@ def logout():
 
 # view applications
 @app.route('/applications/all')
-def viewApplication():
+def view_application():
 	if 'username' in session:
-		connection = databaseConnection()
+		connection = database_connect()
 		try:
 			with connection.cursor() as cursor:
 				sql = "SELECT * FROM General"
@@ -97,9 +96,9 @@ def viewApplication():
 
 
 @app.route('/applications/<variable>')
-def viewById(variable):
+def view_by_id(variable):
 	if 'username' in session:
-		connection = databaseConnection()
+		connection = database_connect()
 		try:
 			with connection.cursor() as cursor:
 				sql = "SELECT * FROM General WHERE ID =" + variable
@@ -115,9 +114,9 @@ def viewById(variable):
 # This should hopefully work, untested because forms being made by someone else - matt
 # submit application
 @app.route('/applications/submit', methods=["POST"])
-def submitApplication():
+def submit_application():
 	if 'username' in session:
-		connection = databaseConnection()
+		connection = database_connect()
 		try:
 			with connection.cursor() as cursor:
 
@@ -125,9 +124,26 @@ def submitApplication():
 
 				sql2 = "INSERT INTO 'Info' ('ID', 'N_1', 'N_1_1', 'N_2', 'N_3', 'N_4', 'N_5', 'N_6', 'N_7', 'E_1', 'N_8', 'N_9', 'N_10', 'N_11', 'N_12', 'E_2', 'N_13', 'N_14', 'E_3', 'E_3_3', 'N_15', 'N_16', 'N_16_16', 'N_17', 'E_4', 'E_4_4', 'N_18', 'E_5', 'N_19', 'N_20', 'E_6', 'N_21', 'E_7', 'E_8', 'E_9') VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
-				cursor.execute(sql1, (request.form['ID'], request.form['Title'], request.form['Pre_ID'], request.form['Student_Name'], request.form['Student_Num'], request.form['Supervisor_Name'], request.form['Principle_Researcher'], request.form['Other_Researchers'], request.form['Project_start'], request.form['Project_end'], request.form['Full_Project_Plan'], request.form['FPP_ID'], request.form['Participant_Info_Form'], request.form['PIF_ID'], request.form['Consent_Form'], request.form['CF_ID'], request.form['External_Funding'], request.form['EF_ID'], request.form['Motivations'], request.form['M_ID']))
+				cursor.execute(sql1, (
+					request.form['ID'], request.form['Title'], request.form['Pre_ID'], request.form['Student_Name'],
+					request.form['Student_Num'], request.form['Supervisor_Name'], request.form['Principle_Researcher'],
+					request.form['Other_Researchers'], request.form['Project_start'], request.form['Project_end'],
+					request.form['Full_Project_Plan'], request.form['FPP_ID'], request.form['Participant_Info_Form'],
+					request.form['PIF_ID'], request.form['Consent_Form'], request.form['CF_ID'],
+					request.form['External_Funding'], request.form['EF_ID'], request.form['Motivations'],
+					request.form['M_ID']))
 
-				cursor.execute(sql2, (request.form['ID'], request.form['N_1'], request.form['N_1_1'], request.form['N_2'], request.form['N_3'], request.form['N_4'], request.form['N_5'], request.form['N_6'], request.form['N_7'], request.form['E_1'], request.form['N_8'], request.form['N_9'], request.form['N_10'], request.form['N_11'], request.form['N_12'], request.form['E_2'], request.form['N_13'], request.form['N_14'], request.form['E_3'], request.form['E_3_3'], request.form['N_15'], request.form['N_16'], request.form['N_16_16'], request.form['N_17'], request.form['E_4'], request.form['E_4_4'], request.form['N_18'], request.form['E_5'], request.form['N_19'], request.form['N_20'], request.form['E_6'], request.form['N_21'], request.form['E_7'], request.form['E_8'], request.form['E_9']))
+				cursor.execute(sql2, (
+					request.form['ID'], request.form['N_1'], request.form['N_1_1'], request.form['N_2'],
+					request.form['N_3'], request.form['N_4'], request.form['N_5'], request.form['N_6'],
+					request.form['N_7'],
+					request.form['E_1'], request.form['N_8'], request.form['N_9'], request.form['N_10'],
+					request.form['N_11'], request.form['N_12'], request.form['E_2'], request.form['N_13'],
+					request.form['N_14'], request.form['E_3'], request.form['E_3_3'], request.form['N_15'],
+					request.form['N_16'], request.form['N_16_16'], request.form['N_17'], request.form['E_4'],
+					request.form['E_4_4'], request.form['N_18'], request.form['E_5'], request.form['N_19'],
+					request.form['N_20'], request.form['E_6'], request.form['N_21'], request.form['E_7'],
+					request.form['E_8'], request.form['E_9']))
 
 				connection.commit()
 		finally:
@@ -136,10 +152,11 @@ def submitApplication():
 	else:
 		return "You need to login to view this resource"
 
+
 @app.route('/admins/addnew', methods=['POST'])
-def addNewAdmin():
+def add_new_admin():
 	if 'admin' in session:
-		connection = databaseConnection()
+		connection = database_connect()
 		try:
 			with connection.cursor() as cursor:
 				sql = "INSERT INTO 'Admins'('uName') VALUES (%s)"
@@ -147,12 +164,12 @@ def addNewAdmin():
 				connection.commit()
 		finally:
 			connection.close()
-		return result
-		# Access the admins table
-		# Create a new entry
-		# POST variables: uName
-		# request.form["uName"]
-		#v1
+		return 'Admin added successfully '
+	# Access the admins table
+	# Create a new entry
+	# POST variables: uName
+	# request.form["uName"]
+	# v1
 	else:
 		return 'Access denied'
 
