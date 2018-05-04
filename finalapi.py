@@ -120,16 +120,28 @@ def view_by_id(variable):
 
 # This should hopefully work, untested because forms being made by someone else - matt
 # submit application
+
+# It is not working "the browser sent a request that the server cant understand"
+# Will have a deeper look later - Dani
 @app.route('/applications/submit', methods=["POST"])
 def submit_application():
 	if 'username' in session:
 		connection = database_connect()
 		try:
 			with connection.cursor() as cursor:
+				# I have split the query into parts it should work not sure though.
+				sql1 = "INSERT INTO 'General' ('ID', 'Title', 'Pre_ID', 'Student_Name', 'Student_Num'," \
+				       " 'Supervisor_Name', 'Principle_Researcher', 'Other_Researchers', 'Project_start'," \
+				       " 'Project_end', 'Full_Project_Plan', 'FPP_ID', 'Participant_Info_Form', 'PIF_ID'," \
+				       " 'Consent_Form', 'CF_ID', 'External_Funding', 'EF_ID', 'Motivations', 'M_ID') " \
+				       "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,)"
 
-				sql1 = "INSERT INTO 'General' ('ID', 'Title', 'Pre_ID', 'Student_Name', 'Student_Num', 'Supervisor_Name', 'Principle_Researcher', 'Other_Researchers', 'Project_start', 'Project_end', 'Full_Project_Plan', 'FPP_ID', 'Participant_Info_Form', 'PIF_ID', 'Consent_Form', 'CF_ID', 'External_Funding', 'EF_ID', 'Motivations', 'M_ID') VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,)"
-
-				sql2 = "INSERT INTO 'Info' ('ID', 'N_1', 'N_1_1', 'N_2', 'N_3', 'N_4', 'N_5', 'N_6', 'N_7', 'E_1', 'N_8', 'N_9', 'N_10', 'N_11', 'N_12', 'E_2', 'N_13', 'N_14', 'E_3', 'E_3_3', 'N_15', 'N_16', 'N_16_16', 'N_17', 'E_4', 'E_4_4', 'N_18', 'E_5', 'N_19', 'N_20', 'E_6', 'N_21', 'E_7', 'E_8', 'E_9') VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+				sql2 = "INSERT INTO 'Info' ('ID', 'N_1', 'N_1_1', 'N_2', 'N_3', 'N_4', 'N_5', 'N_6', 'N_7', 'E_1'," \
+				       " 'N_8', 'N_9', 'N_10', 'N_11', 'N_12', 'E_2', 'N_13', 'N_14', 'E_3', 'E_3_3', 'N_15', 'N_16'," \
+				       " 'N_16_16', 'N_17', 'E_4', 'E_4_4', 'N_18', 'E_5', 'N_19', 'N_20', 'E_6', 'N_21', 'E_7'," \
+				       " 'E_8', 'E_9')" \
+				       " VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s," \
+				       " %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
 				cursor.execute(sql1, (
 					request.form['ID'], request.form['Title'], request.form['Pre_ID'], request.form['Student_Name'],
@@ -155,7 +167,8 @@ def submit_application():
 				connection.commit()
 		finally:
 			connection.close()
-			return "Application successfully submitted."
+			return "Looks ok"
+
 	else:
 		return "You need to login to view this resource"
 
@@ -179,6 +192,70 @@ def add_new_admin():
 	# v1
 	else:
 		return 'Access denied'
+
+
+# Not yet tested vote on an application
+@app.route('/applications/vote', methods=['POST'])
+def vote():
+	if 'admin' in session:
+		connection = database_connect()
+		try:
+			with connection.cursor() as cursor:
+				application_id = request.form["appID"]
+				vote = request.form["Vote"]  # either 1 or 0
+
+				sql = "SELECT 'votes' FROM 'Vote' WHERE 'id' =" + str(application_id)
+				cursor.execute(sql)
+				result = cursor.fetchone()
+				result = result + int(vote)
+				sql = "UPDATE 'Vote' SET 'votes' =" + str(result) + "WHERE Application_ID =" + str(application_id)
+				cursor.execute(sql)
+				connection.commit()
+				sql = "SELECT 'Number_of_votes' FROM 'Vote' WHERE 'id' =" + str(application_id)
+				cursor.execute(sql)
+				result = cursor.fetchone()
+				result = result + 1
+				sql = "UPDATE 'Vote' SET 'Number_of_votes' =" + str(result) + "WHERE Application_ID =" + str(
+					application_id)
+				cursor.execute(sql)
+				connection.commit()
+		finally:
+			close_poll(application_id)
+			connection.close()
+		return 'Admin added successfully '  # Changed the return otherwise looks good.
+	# Access the admins table
+	# Create a new entry
+	# POST variables: uName
+	# request.form["uName"]
+	# v1
+	else:
+		return 'Access denied'
+
+
+@app.route('/applications/search/<criteria>')
+def search(criteria):
+	# Search every field in database if we have a match return with the applications
+	# SELECT * FROM Info and General where 'field' like criteria
+	return 0
+
+
+@app.route('/applications/progress/<id>')
+def progress(id):
+	# returns with the statistics of an ongoing application
+	# Can be only viewed by either a committee member or the applicant
+	return 0
+
+
+def transfer_word_document(document):
+	# Transfers a word or pdf document into variables and submits an application
+	return 0
+
+
+def close_poll(application_id):
+	# We need to set a limit how many votes / what score is needed to be close the poll
+	# After that call the email sending function. Sen an email to the applicant about the result
+	# Optionally send an email to the committee as well
+	return 0
 
 
 # Contacts is a txt file containing the right people
