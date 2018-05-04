@@ -23,16 +23,19 @@ def database_connect():
 	return connection
 
 
+# Checks if the user is an admin if so it stores the admin ID in the admin session variable
+# That session variable only available if the logged in user is an admin
 def check_permission(userName):
 	if 'username' in session:
 		connection = database_connect()
 		try:
 			with connection.cursor() as cursor:
-				sql = "SELECT * FROM Admins WHERE uName=%s "
+				sql = "SELECT idAdmins FROM Admins WHERE uName=%s "
 				cursor.execute(sql, userName)
-				result = len(cursor.fetchall())
-				if result > 0:
-					session["admin"] = 1
+				result = cursor.fetchone()
+				number_of_results = len(result)
+				if number_of_results > 0:
+					session["admin"] = result["idAdmins"]
 		finally:
 			connection.close()
 
@@ -71,7 +74,7 @@ def auth():
 		session["username"] = username
 		check_permission(username)
 		if 'admin' in session:
-			return "You have logged in as an admin"
+			return jsonify(session['admin'])
 		else:
 			return "Successful login"
 	else:
@@ -195,6 +198,7 @@ def add_new_admin():
 
 
 # Not yet tested vote on an application
+# NEW VOTING SYSTEM IS COMING DON'T USE THIS ONE - Dani
 @app.route('/applications/vote', methods=['POST'])
 def vote():
 	if 'admin' in session:
@@ -207,18 +211,7 @@ def vote():
 				sql = "SELECT 'votes' FROM 'Vote' WHERE 'id' =" + str(application_id)
 				cursor.execute(sql)
 				result = cursor.fetchone()
-				result = result + int(vote)
-				sql = "UPDATE 'Vote' SET 'votes' =" + str(result) + "WHERE Application_ID =" + str(application_id)
-				cursor.execute(sql)
-				connection.commit()
-				sql = "SELECT 'Number_of_votes' FROM 'Vote' WHERE 'id' =" + str(application_id)
-				cursor.execute(sql)
-				result = cursor.fetchone()
-				result = result + 1
-				sql = "UPDATE 'Vote' SET 'Number_of_votes' =" + str(result) + "WHERE Application_ID =" + str(
-					application_id)
-				cursor.execute(sql)
-				connection.commit()
+
 		finally:
 			close_poll(application_id)
 			connection.close()
@@ -241,6 +234,16 @@ def search(criteria):
 
 @app.route('/applications/progress/<id>')
 def progress(id):
+	if 'admin' in session:
+		connection = database_connect()
+		try:
+			with connection.cursor() as cursor:
+				sql = "SELECT * FROM General"
+				cursor.execute(sql)
+				result = cursor.fetchall()
+		finally:
+			connection.close()
+
 	# returns with the statistics of an ongoing application
 	# Can be only viewed by either a committee member or the applicant
 	return 0
