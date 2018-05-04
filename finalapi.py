@@ -40,6 +40,22 @@ def check_permission(userName):
 			connection.close()
 
 
+# Checks which application belongs to the currently logged in student.
+def applicant_check(userName):
+	if 'username' in session:
+		connection = database_connect()
+		try:
+			with connection.cursor() as cursor:
+				sql = "SELECT ID from General WHERE Student_Num=%s"
+				cursor.execute(sql, userName)
+				result = cursor.fetchone()
+				number_of_results = len(result)
+				if number_of_results > 0:
+					session["applicationID"] = result["ID"]
+		finally:
+			connection.close()
+
+
 # main
 @app.route('/')
 def index():
@@ -73,6 +89,7 @@ def auth():
 	if conn.bind():
 		session["username"] = username
 		check_permission(username)
+		applicant_check(username)
 		if 'admin' in session:
 			return jsonify(session['admin'])
 		else:
@@ -225,21 +242,28 @@ def search(criteria):
 	return 0
 
 
+# Progress function works - Dani
 @app.route('/applications/progress/<id>')
 def progress(id):
 	if 'admin' in session:
 		connection = database_connect()
 		try:
 			with connection.cursor() as cursor:
-				sql = "SELECT * FROM General"
-				cursor.execute(sql)
-				result = cursor.fetchall()
+				# Number of no votes
+				sql = "SELECT COUNT(*) FROM new_votes WHERE application_ID=%s AND vote=0"
+				cursor.execute(sql, id)
+				no_no = cursor.fetchone()
+				sql = "SELECT COUNT(*) FROM new_votes WHERE application_ID=%s AND vote=1"
+				cursor.execute(sql, id)
+				no_yes = cursor.fetchone()
 		finally:
 			connection.close()
+			return jsonify({'downvotes': no_no, 'upvotes': no_yes})
 
 	# returns with the statistics of an ongoing application
 	# Can be only viewed by either a committee member or the applicant
-	return 0
+	else:
+		return 'Access denied'
 
 
 def transfer_word_document(document):
