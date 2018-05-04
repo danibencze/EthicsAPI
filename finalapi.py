@@ -182,7 +182,7 @@ def add_new_admin():
 		connection = database_connect()
 		try:
 			with connection.cursor() as cursor:
-				sql = "INSERT INTO 'Admins'('uName') VALUES (%s)"
+				sql = "INSERT INTO Admins(uName) VALUES (%s)"
 				cursor.execute(sql, (request.form["uName"]))
 				connection.commit()
 		finally:
@@ -197,30 +197,23 @@ def add_new_admin():
 		return 'Access denied'
 
 
-# Not yet tested vote on an application
-# NEW VOTING SYSTEM IS COMING DON'T USE THIS ONE - Dani
+# Working voting system -  Dani
 @app.route('/applications/vote', methods=['POST'])
 def vote():
 	if 'admin' in session:
 		connection = database_connect()
+		application_id = request.form["appID"]
+		vote = request.form["vote"]  # either 1 or 0
 		try:
 			with connection.cursor() as cursor:
-				application_id = request.form["appID"]
-				vote = request.form["Vote"]  # either 1 or 0
-
-				sql = "SELECT 'votes' FROM 'Vote' WHERE 'id' =" + str(application_id)
-				cursor.execute(sql)
-				result = cursor.fetchone()
+				sql = "INSERT INTO new_votes(admin_ID,application_ID,vote) VALUES (%s,%s,%s)"
+				cursor.execute(sql, (int(session['admin']), int(application_id), int(vote)))
+				connection.commit()
 
 		finally:
 			close_poll(application_id)
 			connection.close()
-		return 'Admin added successfully '  # Changed the return otherwise looks good.
-	# Access the admins table
-	# Create a new entry
-	# POST variables: uName
-	# request.form["uName"]
-	# v1
+		return 'Vote casted'
 	else:
 		return 'Access denied'
 

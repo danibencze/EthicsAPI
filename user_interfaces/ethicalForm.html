@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+	<meta charset="utf-8" >
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<style>
+		#box {
+   		 	height:200px;	
+		}
+
+        #title{
+			height:40px;
+		}
+		label {
+    		padding-left:5px;
+   			width:70%;
+    		display:inline-block
+		}
+		p{
+			color:grey;
+		}
+	</style>		
+</head>
+<body>
+	<div class = "container">
+		<div class= "header">
+			<h1 class= "lead">Ethical Approval Request Form</h1>
+		</div>
+		<div class= "content">
+		
+		<form method= "POST" action="http://o0841.cscloud.cf.ac.uk:5000/applications/submit" style="width: 50%;">
+
+			<!---->
+			<!-- General Form (1)--> 
+			<!---->
+
+			<h2 class= "form1">1 General Form</h2>
+			
+			<label>Title of Project:</label><br/>
+			<input type = "text" id = "title" name = "title" size="111"/><br/>
+			<!-- title of project-->
+			
+			<p>If this submission relates to a previous approval request (e.g. a revision or extension):</p>
+			<label>Previous ID:</label>
+			<input type = "text" name = "id"/><br/>
+			<!-- previous ID-->
+			
+			<p>If this approval refers to an Undergraduate or Masters Student Project:</p>
+			
+			<label>Student name(s):</label><br/>
+			<input type = "text" id = "title" name = "student_name" size="111"/><br/>
+			<!-- student name-->
+
+			<label>Student ID(s):</label><br/> 
+			<input type = "text" id = "title" name = "student_number" size="111"/><br/>
+			<!-- student number-->
+
+			<label>Supervisor Name(s):</label><br/>  
+			<input type = "text" id = "title"  name = "supervisor_name" size="111"/><br/><br/>
+			<!-- supervisor name-->
+			
+			<p>If this approval refers to a research project (e.g. Staff, Postgraduate Research Student):</p>
+
+			<label>Principle Researchers:</label> 
+			<input type = "text" id = "check" name = "principle_researchers"/><br/>
+			<!-- principle researchers-->
+
+			<label>Other Researchers</label>
+			<input type = "text" id = "check" name = "other_researchers"/><br/><br/>
+			<!-- other researchers-->
+
+			<label>Project Start Date:</label>
+			<input type = "text" name = "project_start"/>
+			<!-- project start date-->
+
+			<label>Project End Date:</label>
+			<input type = "text"  name = "project_end"/><br/><br/>
+			<!-- project end date-->
+			
+			<p>Attachement:</p>
+
+			<label>Full Project Plan/Proposal</label>
+			<input type = "text" id = "check"  name = "project_plan"/>
+			<!-- project plan -->
+			
+			<label>Document Version ID:</label> 
+			<input type = "text" name = "project_plan_id"/><br/><br/>
+
+			<label>Participant Information Form:</label>
+			<input type = "text" id = "check"  name = "participant_info"/>
+			<!-- participant information form-->
+
+			<label>Document Version ID:</label> 
+			<input type = "text" id = "check"  name = "participant_info_id"/><br/><br/>
+
+			<label>Consent Form:</label> 
+			<input type = "text" id = "check"  name = "consent_form"/>
+			<!-- consecnt form -->
+			<label>Document Version ID: </label>
+			<input type = "text" id = "check"  name = "consent_form_id"/><br/><br/>
+
+			<label>RIOTP Completion Certiﬁcates:</label> 
+			<input type = "text" name = "RIOTP"/>
+			<!-- RIOTP Completion Certiﬁcates-->
+			
+			<label>Document Version ID:</label> 
+			<input type = "text" name = "RIOTP_id"/><br/><br/>
+
+			<label>Details concerning external funding:</label> 
+			<input type = "text" id = "check"  name = "ext_fund"/>
+			<!-- Details concerning external funding-->
+			<label>Document Version ID:</label> 
+			<input type = "text" id = "check"  name = "ext_fund_id"/><br/><br/>
+
+			<label>Motivations for and list of amendments:</label> 
+			<input type = "text" id = "check"  name = "motiv"/>
+			<!-- Motivations for and list of amendments-->
+
+			<label>Document Version ID:</label> 
+			<input type = "text" id = "check"  name = "motiv_id"/><br/><br/><br/>
+			
+
+			<!---->
+			<!-- Recruitment Procedure Form(2)-->
+			<!--
+				N_1, N_2 ...... names for input, for each request in the ethical form
+				E_1, E_2 ...... names for input, for each description/ explaination at the end of every page
+			-->
+
+
+			<h2 class= "form2">2 Recruitment Procedure</h2>
+			<label id = "N">1&nbsp &nbspDoes your project include children under 18 years of age?</label>  
+			<input type = "text" name = "N_1"/><br/>
+			<!--  1  first request-->			
+			
+			<label id = "N"> &nbspIf “Yes,” have you read and understood Cardiff University’s Code of Practice for researchers Working With Children and Young People which forms part of the Safeguarding Children and Vulnerable Adults Policy? The Interim Guidance is at Appendix 1, Page 9 of this <a href="https://www.cardiff.ac.uk/__data/assets/pdf_file/0019/473212/2016-Jun-Interim-Safeguarding-Policy-v1.pdf">Policy</a></label> 
+			<input type = "text" name = "N_1_1"/><br/><br/>	
+			
+			<label id = "N">2&nbsp &nbspDoes your project include people with learning or communication difﬁculties?</label>
+			<input type = "text" name = "N_2"/><br/><br/>
+			<!--  2  -->
+			
+			<label id = "N">3&nbsp &nbspDoes your project include people in custody?</label> 
+			<input type = "text" name = "N_3"/><br/><br/>
+			<!--  3  -->
+
+			<label id = "N">4&nbsp &nbspIs your project likely to include people involved in illegal activities?</label> 
+			<input type = "text" name = "N_4"/><br/><br/>
+			<!--  4  -->
+
+			<label id = "N">5&nbsp &nbspDoes your project involve people belonging to a vulnerable group, other than those listed above?</label>
+			<input type = "text" name = "N_5"/><br/><br/>
+			<!--  5  -->
+
+			<label id = "N">6&nbsp &nbspDoes your project include people who are, or are likely to become your clients or clients of the department in which you work?</label> 
+			<input type = "text" name = "N_6"/><br/><br/>
+			<!--  6  -->
+
+			<label id = "N">7&nbsp &nbspDoes your project provide for people for whom English / Welsh is not their ﬁrst language?</label> 
+			<input type = "text" name = "N_7"/><br/><br/>
+		 	<!--  7  -->
+
+		 	<label >If any of the blue boxes have been ticked, please explain how the potential ethical issue(s) will be handled:</label><br/>
+		 	<input type = "text" id = "box" name = "E_1" size="111"/><br/>
+
+			<label> Please describe how you will securely collect and store any data (required):</label><br/>
+			<input type = "text" id = "box" name = "E_1_1" size="111"/><br/><br/><br/>
+
+			
+			<!---->
+			<!-- Consent Form(3)--> 
+			<!---->
+
+
+			<h2 class= "form3">3 Consent Procedures</h2>
+
+			<label id = "N">8&nbsp &nbspWill you tell participants that their participation is voluntary?</label> 
+			<input type = "text" name = "N_8"/><br/><br/>
+			<!--  8  -->
+
+			<label id = "N">9&nbsp &nbspWill you obtain written consent for participation?</label> 
+			<input type = "text" name = "N_9"/><br/><br/>
+		 	<!--  9  -->
+
+		 	<label id = "N">10&nbsp &nbspIf the research is observational, will you ask participants for their consent to being observed?</label>	  
+		 	<input type = "text" name = "N_10"/><br/><br/>
+			<!--  10  -->
+			
+			<label id = "N">11&nbsp &nbspWill you tell participants that they may withdraw from the research at any time and for any reason?</label>
+			<input type = "text" name = "N_11"/><br/><br/>
+			<!--  11  -->
+			
+			<label id = "N">12&nbsp &nbspWill you give potential participants a signiﬁcant period of time to consider participation?</label>
+			<input type = "text" name = "N_12"/><br/><br/>
+			<!--  12  -->
+			
+			<label>If any of the blue boxes has been ticked, please explain how the potential ethical issue(s) will be handled:</label><br/>
+			<input type = "text" id = "box" name = "E_2" size="111"/><br/><br/><br/>
+
+
+			<!---->
+			<!-- Possible Harm to Participants Form(4)--> 
+			<!---->
+
+
+			<h2 class= "form4">4 Possible Harm to Participants</h2>
+
+			<label>13&nbsp &nbspIs there any realistic risk of any participants experiencing either physical or psychological distress or discomfort?</label> 
+			<input type = "text" name = "N_13"/><br/><br/>
+			<!--  13  -->
+		 	
+		 	<label>14&nbsp &nbspIs there any realistic risk of any participants experiencing a detriment to their interests as a result of participation?</label>
+		 	<input type = "text" name = "N_14"/><br/><br/>
+		 	<!--  14  -->
+			
+			<label>If any of the blue boxes has been ticked, please explain how the potential ethical issue(s) will be handled:</label> <br/>
+		 	<input type = "text" id = "box" name = "E_3" size="111"/><br/><br/>
+			
+			<label> If there are any risks to the participants, please explain how you intend to minimise these risks:</label><br/>
+			<input type = "text" id = "box" name = "E_3_3" size="111"/><br/><br/><br/>
+
+			 
+			<!---->
+			<!-- Data protection Form(5)-->
+			<!---->
+
+
+			<h2 class= "form5">5 Data Protection</h2>
+			<label>15&nbsp &nbspWill any non-anonymised and/or personalised data be generated and/or stored?</label> 
+			<input type = "text" name = "N_15"/><br/><br/>
+			<!--  15  -->
+
+			<label>16&nbsp &nbspWill you have access to documents containing sensitive data about living individuals?</label>
+			<input type = "text" name = "N_16"/><br/><br/>
+			 <!--  16  -->
+			 
+			<label>If “Yes” will you gain the consent of the individuals concerned </label>
+			<input type = "text" name = "N_16_16"/><br/><br/>
+			 
+			<label>17&nbsp &nbspAre you planning to use Cardiff University installation of OneDrive to store data</label>  
+			<input type = "text" name = "N_17"/><br/><br/>
+			 <!--  17  -->
+
+			<label>If “No” is your data storage policy compliant with<a href="http://sites.cardiff.ac.uk/isf/"> Cardiff University ISF</a></label>
+			<input type = "text" name = "N_17_17"/><br/><br/>
+			 
+			<label>Please describe how you will securely collect and store any data (required):</label> <br/>
+			<input type = "text" id = "box" name = "E_4" size="111"/><br/><br/>
+			 
+			<label>If any of the blue boxes have been ticked, please explain how the potential ethical issue(s) will be handled:</label> <br/>
+			<input type = "text" id = "box" name = "E_4_4" size="111"/><br/><br/><br/>
+
+			
+			<!---->
+			<!-- researcher safety Form(6)-->
+			<!---->
+
+
+			<h2 class= "form6">6 Researcher Safety</h2>
+			<label>18&nbsp &nbspIf relevant to your research, have you taken into account the Cardiff University guidance on safety in ﬁeldwork / for lone workers?</label> 
+			<input type = "text" name = "N_18"/><br/><br/>
+			<!--  18  -->
+			
+			<label>If any of the blue boxes have been ticked, please explain how the potential ethical issue(s) will be handled:</label><br/>
+			<input type = "text" id = "box" name = "E_5" size="111"/><br/><br/><br/>
+
+
+			<!---->
+			<!-- Researcher Governance Form(7)-->
+			<!---->
+
+
+			<h2 class= "form7">7 Researcher Governance</h2>
+			<label>19&nbsp &nbspDoes your study include the use of a drug? You will need to contact Research Governance before submission <a href="resgov@cf.ac.uk">(resgov@cf.ac.uk)</a></label> 
+			<input type = "text" name = "N_19"/><br/><br/>
+			<!--  19  -->
+			
+			<label>20&nbsp &nbspDoes the study involve the collection or use of human tissue? You will need to contact the Human Tissue Act team before submission <a href="hta@cf.ac.uk">(hta@cf.ac.uk)</a>  </label>
+			<input type = "text" name = "N_20"/><br/><br/>
+			<!--  20  -->
+			
+			<label>If any of the blue boxes have been ticked, please explain how the potential ethical issue(s) will be handled and please attach approvals received from Research Governance and/or Human Tissue Act team:</label><br/>
+			<input type = "text" id = "box" name = "E_6" size="111"/><br/><br/>
+
+
+			<!---->
+			<!-- prevent duty Form(8)-->
+			<!---->
+
+
+			<h2 class= "form8">8 Prevent Duty</h2>
+			<label>21&nbsp &nbspHas due regard been given to Prevent duty, in particular to prevent anyone being drawn into terrorism? <a href="https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/445916/Prevent_Duty_Guidance_For_Higher_Education__England__Wales_.pdf">Prevent Duty Guidance Procedure Freedom of Speech</a></label> 
+			<input type = "text" name = "N_21"/><br/><br/>
+			<!--  21  -->
+
+			<label>If any of the blue boxes have been ticked, please explain how the potential ethical issue will be handled: </label><br/>
+			<input type = "text" id = "box" name = "E_7" size="111"/><br/><br/>
+
+
+			<!---->
+			<!-- other ethical consideration Form(9)-->
+			<!---->
+
+
+			<h2 class= "form9">9 Other Ethical Consideration</h2>
+			<label>If there are other potential ethical issues that you think the Committee should consider please explain them in the following space. It is your obligation to bring to the attention of the Committee any ethical issues not covered on this form. </label><br/>
+			<input type = "text" id = "box" name = "E_8" size="111"/><br/><br/>
+
+
+			<!---->
+			<!-- Any other comment Form(10)-->
+			<!---->
+
+
+			<h2 class= "form10">10 Any Other Comment</h2>
+			<label>If there is additional information that you think the Committee should consider please explain in the space below:</label><br/>
+			<input type = "text" id = "box" name = "E_9" size="111"/><br/><br/><!-- title of project-->
+            <input type="submit">
+		</form>
+		</div>
+	</div>
+</body>
+</html>

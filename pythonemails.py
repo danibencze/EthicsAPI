@@ -6,7 +6,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 MY_ADDRESS = 'SingletonRO@cardiff.ac.uk'
-PASSWORD = #password here
+PASSWORD = 'a'#password here
 
 def get_contacts(filename):
     """
