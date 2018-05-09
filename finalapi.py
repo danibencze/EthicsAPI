@@ -243,6 +243,7 @@ def search(criteria):
 
 
 # Progress function works - Dani
+# Need to check for if this is the user's application
 @app.route('/applications/progress/<id>')
 def progress(id):
 	if 'admin' in session:
@@ -363,3 +364,5 @@ if __name__ == "__main__":
 # Another database with all the admin names in it. Done - Dani
 # Whenever an admin is added to the admins table trigger another insert to the voting table
 # Make a Voting table
+
+##TEST
