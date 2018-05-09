@@ -9,8 +9,8 @@ connection = pymysql.connect(host='csmysql.cs.cf.ac.uk',
 
 try:
 	with connection.cursor() as cursor:
-		sql = "INSERT INTO General (Title) VALUES ('Asd')"
-		cursor.execute(sql)
+		sql = "INSERT INTO General (Title) VALUES (%s)"
+		cursor.execute(sql, "Asd")
 		result = cursor.fetchall()
 		print(result)
 finally:
