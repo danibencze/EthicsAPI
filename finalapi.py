@@ -33,8 +33,8 @@ def check_permission(userName):
 				sql = "SELECT idAdmins FROM Admins WHERE uName=%s "
 				cursor.execute(sql, userName)
 				result = cursor.fetchone()
-				number_of_results = len(result)
-				if number_of_results > 0:
+				number_of_results = bool(result)
+				if number_of_results:
 					session["admin"] = result["idAdmins"]
 		finally:
 			connection.close()
@@ -63,14 +63,6 @@ def index():
 		return 'Logged in'
 	else:
 		return 'You can log in at /auth sending your password and username'
-
-
-# emergency login
-@app.route("/auth/emergency", methods=['POST'])
-def emer_auth():
-	session["username"] = request.form["username"]
-	if "username" in session:
-		return "Logged in manually"
 
 
 # auth
