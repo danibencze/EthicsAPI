@@ -49,12 +49,11 @@ def applicant_check(userName):
 				sql = "SELECT ID from General WHERE Student_Num=%s"
 				cursor.execute(sql, userName)
 				result = cursor.fetchone()
-				number_of_results = len(result)
-				if number_of_results > 0:
+				number_of_results = bool(result)
+				if number_of_results:
 					session["applicationID"] = result["ID"]
 		finally:
 			connection.close()
-
 
 # main
 @app.route('/')
@@ -89,7 +88,7 @@ def auth():
 	if conn.bind():
 		session["username"] = username
 		check_permission(username)
-		applicant_check(username)
+		#applicant_check(username)
 		if 'admin' in session:
 			return jsonify(session['admin'])
 		else:
@@ -108,7 +107,7 @@ def logout():
 # view applications
 @app.route('/applications/all')
 def view_application():
-	if 'username' in session:
+	if 'admin' in session:
 		connection = database_connect()
 		try:
 			with connection.cursor() as cursor:
@@ -118,13 +117,23 @@ def view_application():
 		finally:
 			connection.close()
 			return jsonify(result)
+	elif 'username' in session:
+		connection = database_connect()
+		try:
+			with connection.cursor() as cursor:
+				sql = "SELECT * FROM General WHERE Student_Num =%s"
+				cursor.execute(sql, session["username"])
+				result = cursor.fetchall()
+		finally:
+			connection.close()
+			return jsonify(result)
 	else:
-		return "You need to login to view this resource"
+		return "Login required"
 
 
 @app.route('/applications/<variable>')
 def view_by_id(variable):
-	if 'username' in session:
+	if 'admin' in session:
 		connection = database_connect()
 		try:
 			with connection.cursor() as cursor:
