@@ -65,6 +65,14 @@ def index():
 		return 'You can log in at /auth sending your password and username'
 
 
+# emergency login
+@app.route("/auth/emergency", methods=['POST'])
+def emer_auth():
+	session["username"] = request.form["username"]
+	if "username" in session:
+		return "Logged in manually"
+
+
 # auth
 @app.route('/auth/login', methods=['POST'])
 def auth():
