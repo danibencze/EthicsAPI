@@ -1,8 +1,8 @@
 import pymysql.cursors
 
 connection = pymysql.connect(host='csmysql.cs.cf.ac.uk',
-                             user='group12.2017',
-                             password='rwqeBE4DBj5vdk',
+                             user='user',
+                             password='pwd',
                              db='group12_2017',
                              charset='utf8mb4',
                              cursorclass=pymysql.cursors.DictCursor)
